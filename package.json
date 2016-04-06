@@ -17,7 +17,6 @@
     "node": "*"
   },
   "dependencies": {
-    "velocity-animate": "^1.2.3",
     "vue-filters": "^0.1.6",
     "vue-mixins": "^0.2.2"
   },
@@ -47,6 +46,7 @@
     "karma-webpack": "^1.7.0",
     "mocha": "^2.4.5",
     "parse5": "^2.1.5",
+    "script-runner": "^0.1.4",
     "style-loader": "^0.13.1",
     "stylus-loader": "^2.0.0",
     "template-html-loader": "0.0.3",
@@ -67,7 +67,9 @@
   ],
   "readmeFilename": "README.md",
   "scripts": {
-    "build": "NODE_ENV=production vue-compiler --out / src/*.vue",
+    "build:vue": "NODE_ENV=production vue-compiler --out . src/*.vue",
+    "build:webpack": "webpack --config build/webpack.config.coffee",
+    "build": "run-npm build:*",
     "dev": "vue-dev-server",
     "watch": "karma start --browsers Chrome --auto-watch --reporters spec",
     "test": "karma start --single-run",

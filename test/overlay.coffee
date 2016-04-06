@@ -14,21 +14,28 @@ describe "overlay", ->
       env.overlay.$el.parentNode.nodeType.should.equal 11
 
     it "should open first overlay", (done) ->
-      env.openOverlay()
-      env.firstOpened.should.be.true
-      env.overlay.style["z-index"].should.equal 1000
-      done()
+      env.openOverlay ->
+        env.$nextTick ->
+          env.firstOpened.should.be.true
+          if window.getComputedStyle
+            style = window.getComputedStyle(env.overlay.$el)
+            style.getPropertyValue("opacity").should.equal '0.5'
+          env.overlay.style["z-index"].should.equal 1000
+          done()
 
     it "should open second overlay", (done) ->
-      env.openSecondOverlay()
-      env.overlay.style["z-index"].should.equal 1005
-      env.overlay.close()
-      env.overlay.close()
-      done()
+      env.openSecondOverlay ->
+        env.$nextTick ->
+          if window.getComputedStyle
+            style = window.getComputedStyle(env.overlay.$el)
+            style.getPropertyValue("opacity").should.equal '0.6'
+          env.overlay.style["z-index"].should.equal 1005
+          env.overlay.close()
+          env.overlay.close()
+          done()
 
     it "should not close when not dismissable", (done) ->
-      env.overlay.open(dismissable:false)
+      env.overlay.open(dismissable:false,onClosed:done)
       env.overlay.dismiss()
       env.overlay.stack.length.should.equal 1
       env.overlay.close()
-      done()

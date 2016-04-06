@@ -8,8 +8,6 @@ div#overlay(
 </template>
 
 <script lang="coffee">
-Velocity = require("velocity-animate")
-
 module.exports =
 
   mixins:[
@@ -32,6 +30,9 @@ module.exports =
       height: "120vh"
       "background-color": "black"
       "will-change": "opacity"
+    fade: ({el,opacity,cb}) ->
+      @style.opacity = opacity
+      cb?()
 
   el: -> document.createElement "div"
 
@@ -48,14 +49,7 @@ module.exports =
       @stack.push options
       options.onBeforeOpen?()
       @style["z-index"] += 5
-      Velocity @$el, {opacity: options.opacity},
-        {
-          duration: 300
-          queue: false
-          easing: 'easeOutQuad'
-          complete: options.onOpened
-        }
-
+      @fade el:@$el, opacity:options.opacity, cb:options.onOpened
       return @style["z-index"]+1
 
     close: ->
@@ -68,14 +62,7 @@ module.exports =
           opacity = @stack[@stack.length-1].opacity
         options.onBeforeClose?()
         @style["z-index"]-=5
-        Velocity @$el, {opacity: opacity},
-          {
-            duration: 300
-            queue: false
-            easing: 'easeOutQuad'
-            complete: =>
-
-              options.onClosed?()
-              @$remove() if @stack.length == 0
-          }
+        @fade el:@$el, opacity:opacity, cb: =>
+          options.onClosed?()
+          @$remove() if @stack.length == 0
 </script>
