@@ -2,7 +2,7 @@
 .container
   button(@click="openOverlay") Open Overlay
   button(@click.prevent="openSecondOverlay",v-if="firstOpened",:style="buttonStyle") Open another Overlay
-  a(href="https://github.com/vue-comps/vue-side-nav/blob/master/dev/basic.vue") source
+  a(href="https://github.com/vue-comps/vue-overlay/blob/master/dev/basic.vue") source
 </template>
 
 <script lang="coffee">
