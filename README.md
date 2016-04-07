@@ -20,13 +20,20 @@ overlay = require("vue-overlay")(Vue)
 overlay = window.vueComps.overlay
 
 # returns the z-index of the overlay + 1 (starts with 1001)
-zindex = overlay.open(options)
+# and a function to close this specific overlay
+{zIndex,close} = overlay.open(options)
 overlay.open() # z-index will raise by 5
 
 # close hooks of the first options object will be called
 # and z-index will be lowered by 5
 overlay.close()
 overlay.close() # overlay really closes
+
+# To close a specific overlay you can use
+overlay.close(options) # where options must be the same object which is used to open
+# or use the result from open
+{close} = overlay.open()
+close()
 
 # the overlay comes without animation, but you can easily set them up,
 # for example with velocity.js:
