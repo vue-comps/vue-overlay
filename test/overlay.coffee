@@ -20,7 +20,7 @@ describe "overlay", ->
           if window.getComputedStyle
             style = window.getComputedStyle(env.overlay.$el)
             style.getPropertyValue("opacity").should.equal '0.5'
-          env.overlay.style["z-index"].should.equal 1000
+          env.overlay.style.zIndex.should.equal 1000
           done()
 
     it "should open second overlay", (done) ->
@@ -29,7 +29,7 @@ describe "overlay", ->
           if window.getComputedStyle
             style = window.getComputedStyle(env.overlay.$el)
             style.getPropertyValue("opacity").should.equal '0.6'
-          env.overlay.style["z-index"].should.equal 1005
+          env.overlay.style.zIndex.should.equal 1005
           env.overlay.close()
           env.overlay.close()
           done()
