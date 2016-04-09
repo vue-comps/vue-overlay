@@ -13,7 +13,12 @@ module.exports =
   mixins:[
     require("vue-mixins/setCss")
   ]
-
+  props:
+    "fade":
+      type: Function
+      default: ({el,opacity,cb}) ->
+        @style.opacity = opacity
+        cb()
   filters:
     notPrevented: require("vue-filters/notPrevented")
     prevent: require("vue-filters/prevent")
@@ -29,9 +34,7 @@ module.exports =
       height: "120vh"
       backgroundColor: "black"
       willChange: "opacity"
-    fade: ({el,opacity,cb}) ->
-      @style.opacity = opacity
-      cb?()
+
 
   el: -> document.createElement "div"
 
@@ -40,19 +43,19 @@ module.exports =
 
   methods:
 
-    dismiss: (e) -> @close() if @stack[@stack.length-1].dismissable
+    dismiss: (e) -> @close() if @stack[@stack.length-1].dissmissible
 
     open: (options={}) ->
       if @stack.length == 0
         @$appendTo('body')
         @setCss(document.body,"overflow","hidden")
       options.opacity ?= 0.5
-      options.dismissable ?= true
+      options.dissmissible ?= true
       @stack.push options
       options.onBeforeOpen?()
       @style.zIndex += 5
       options.zIndex = @style.zIndex
-      @fade el:@$el, opacity:options.opacity, cb:options.onOpened
+      @fade el:@$el, opacity:options.opacity, cb: -> options.onOpened?()
       return {zIndex: @style.zIndex+1, close: (callCbs=false) => @close(options,callCbs)}
 
     close: (options=@stack[@stack.length-1],callCbs=true) ->
@@ -61,9 +64,11 @@ module.exports =
         if @stack.length == 0
           @setCss(document.body,"overflow")
           opacity = 0
+          @style.zIndex = 995
         else
-          opacity = @stack[@stack.length-1].opacity
-          @style.zIndex = @stack[@stack.length-1].zIndex
+          lastItem = @stack[@stack.length-1]
+          opacity = lastItem.opacity
+          @style.zIndex = lastItem.zIndex
         options.onBeforeClose?() if callCbs
         @fade el:@$el, opacity:opacity, cb: =>
           options.onClosed?() if callCbs

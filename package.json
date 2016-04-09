@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "vue-filters": "^0.1.6",
-    "vue-mixins": "^0.2.2"
+    "vue-mixins": "^0.2.3"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",

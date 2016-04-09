@@ -1,7 +1,10 @@
 # out: ../overlay.js
 overlay = null
-module.exports = (Vue) ->
+creator = (Vue) ->
   unless overlay?
-    overlay = Vue.extend(require('./overlay-component'))
+    overlay = Vue.extend(creator.obj)
     overlay = new overlay()
   return overlay
+creator.obj = require('./overlay-component')
+
+module.exports = creator

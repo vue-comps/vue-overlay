@@ -47,11 +47,14 @@ overlay.fade = ({el,opacity,cb}) ->
       complete: cb
     }
 ```
+
+For examples see `dev/`
+
 #### Options
 | Name | type | default | description |
 | ---:| --- | ---| --- |
 | opacity | Number | 0.5 | opacity of the overlay |
-| dismissable | Boolean | true | is the overlay dismissable by click or ESC? |
+| dissmissible | Boolean | true | is the overlay dissmissible by click or ESC? |
 | onBeforeOpen | Function | null | hook before open animation |
 | onOpened | Function | null | hook after open animation |
 | onBeforeClose | Function | null | hook before close animation |
