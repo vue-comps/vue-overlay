@@ -7,6 +7,7 @@ To mask out the background when a dialog / modal or similar is opened, a overlay
 ### Used in
 - [side-nav](https://vue-comps.github.io/vue-side-nav)
 - [modal](https://vue-comps.github.io/vue-comps-modal)
+
 # Install
 
 ```sh
