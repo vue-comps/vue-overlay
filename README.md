@@ -2,7 +2,7 @@
 
 To mask out the background when a dialog / modal or similar is opened, a overlay is needed.
 
-### [See it in action](https://vue-comps.github.io/vue-overlay)
+### [Demo](https://vue-comps.github.io/vue-overlay)
 
 ### Used in
 - [side-nav](https://vue-comps.github.io/vue-side-nav)
@@ -12,7 +12,7 @@ To mask out the background when a dialog / modal or similar is opened, a overlay
 ```sh
 npm install --save-dev vue-overlay
 ```
-or include `build/bundle.js`
+or include `build/bundle.js`.
 
 ## Usage
 ```coffee
@@ -51,8 +51,7 @@ overlay.fade = ({el,opacity,cb}) ->
     }
 ```
 
-For examples see `dev/`
-
+For examples see [`dev/`](dev/).
 #### Options
 | Name | type | default | description |
 | ---:| --- | ---| --- |
@@ -69,7 +68,7 @@ Clone repository
 npm install
 npm run dev
 ```
-Browse to `http://localhost:8080/`
+Browse to `http://localhost:8080/`.
 
 ## License
 Copyright (c) 2016 Paul Pflugradt
