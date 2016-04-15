@@ -45,10 +45,16 @@ module.exports =
 
     dismiss: (e) -> @close() if @stack[@stack.length-1].dissmissible
 
+    setScroll: (options) ->
+      if options.allowScroll
+        @setCss(document.body,"overflow")
+      else
+        @setCss(document.body,"overflow","hidden")
+
     open: (options={}) ->
       if @stack.length == 0
         @$appendTo('body')
-        @setCss(document.body,"overflow","hidden")
+      @setScroll(options)
       options.opacity ?= 0.5
       options.dissmissible ?= true
       @stack.push options
@@ -62,11 +68,12 @@ module.exports =
       if options? and (index = @stack.indexOf(options)) >-1
         @stack.splice(index,1)
         if @stack.length == 0
-          @setCss(document.body,"overflow")
+          @setScroll(allowScroll:true)
           opacity = 0
           @style.zIndex = 995
         else
           lastItem = @stack[@stack.length-1]
+          @setScroll(lastItem)
           opacity = lastItem.opacity
           @style.zIndex = lastItem.zIndex
         options.onBeforeClose?() if callCbs

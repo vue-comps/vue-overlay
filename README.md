@@ -62,6 +62,7 @@ For examples see [`dev/`](dev/).
 | onOpened | Function | null | hook after open animation |
 | onBeforeClose | Function | null | hook before close animation |
 | onClosed | Function | null | hook after close animation |
+| allowScroll | Boolean | false | don't set `overflow:hidden` on body |
 
 # Development
 Clone repository
