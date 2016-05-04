@@ -83,8 +83,7 @@ module.exports =
       @setCss(document.documentElement,"margin-right",style.m)
 
     open: (options={}) ->
-      if @stack.length == 0
-        @$appendTo('body')
+      document.body.appendChild(@$el) unless @lastItem?
       options.onBeforeOpen?()
       options.zIndex = @zIndex + 5
       @stack.push options
@@ -97,5 +96,5 @@ module.exports =
         options.onBeforeClose?() if callCbs
         @fade el:@$el, opacity:@opacity, cb: =>
           options.onClosed?() if callCbs
-          @$remove() if @stack.length == 0
+          document.body.removeChild(@$el) unless @lastItem?
 </script>
