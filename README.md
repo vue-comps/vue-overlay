@@ -1,8 +1,12 @@
 # vue-overlay
 
-To mask out the background when a dialog / modal or similar is opened, a overlay is needed.
+> To mask out the background when a dialog / modal or similar is opened, a overlay is needed.
 
 ### [Demo](https://vue-comps.github.io/vue-overlay)
+
+### Features
+- singleton & z-index management to allow stacking
+- background doesn't move when scroll gets disabled
 
 ### Used in
 - [side-nav](https://vue-comps.github.io/vue-side-nav)
@@ -17,31 +21,44 @@ or include `build/bundle.js`.
 
 ## Usage
 ```coffee
-# overlay is a singleton and is designed
-# to be used in different places simultaniously
 overlay = require("vue-overlay")(Vue)
 # or, when using bundle.js
 overlay = window.vueComps.overlay
+```
+For examples see [`dev/`](dev/).
+If you need to reliable get the `Vue` instance, see [vue-mixins/vue](https://github.com/paulpflug/vue-mixins#vue)
 
-# returns the z-index of the overlay + 1 (starts with 1001)
-# and a function to close this specific overlay
-{zIndex,close} = overlay.open(options)
-overlay.open() # z-index will raise by 5
+{zIndex, close} = overlay.open(options)
+---
+  - `zIndex` - the z-index of the opened overlay - will be raised by 5 for each overlay
+  - `close(callHooks=true)` - shortcut for `overlay.close(options,callHooks)` - options will be the same instance used for opening
+  - `Options`
 
-# close hooks of the first options object will be called
-# and z-index will be lowered by 5
-overlay.close()
-overlay.close() # overlay really closes
+| Name | type | default | description |
+| ---:| --- | ---| --- |
+| opacity | Number | 0.5 | opacity of the overlay |
+| dismissable | Boolean | true | is the overlay dismissable by click or ESC? |
+| onBeforeOpen | Function | null | hook before open animation |
+| onOpened | Function | null | hook after open animation |
+| onBeforeClose | Function | null | hook before close animation |
+| onClosed | Function | null | hook after close animation |
+| allowScroll | Boolean | false | don't set `overflow:hidden` on body |
+| color | String | "black" | background-color of the overlay |
 
-# To close a specific overlay you can use
-overlay.close(options) # where options must be the same object which is used to open
-# or use the result from open
-{close} = overlay.open()
-close()
+overlay.close(options=lastOverlay, callHooks=true)
+---
+- `options` the options object which was used to open a overlay
+- `callHooks` set to `false` to suppress the calls of `onBeforeClose` and `onClosed` of that overlay
 
-# the overlay comes without animation, but you can easily set them up,
-# for example with velocity.js:
-Velocity = require("velocity-animate")
+overlay.fade({el,opacity,cb})
+---
+overwrite to add a animation
+- `el` the `div` element of the overlay
+- `opacity` the target opacity of the opening/closing
+- `cb` a function which must be called when finished
+
+example:
+```coffee
 overlay.fade = ({el,opacity,cb}) ->
   Velocity el, {opacity: opacity},
     {
@@ -52,17 +69,9 @@ overlay.fade = ({el,opacity,cb}) ->
     }
 ```
 
-For examples see [`dev/`](dev/).
-#### Options
-| Name | type | default | description |
-| ---:| --- | ---| --- |
-| opacity | Number | 0.5 | opacity of the overlay |
-| dissmissible | Boolean | true | is the overlay dissmissible by click or ESC? |
-| onBeforeOpen | Function | null | hook before open animation |
-| onOpened | Function | null | hook after open animation |
-| onBeforeClose | Function | null | hook before close animation |
-| onClosed | Function | null | hook after close animation |
-| allowScroll | Boolean | false | don't set `overflow:hidden` on body |
+
+
+
 
 # Development
 Clone repository

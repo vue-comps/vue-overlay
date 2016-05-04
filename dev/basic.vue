@@ -1,9 +1,12 @@
 <template lang="jade">
 .container
   button(@click="openOverlay") Open Overlay
-  button(@click.prevent="openSecondOverlay",v-if="firstOpened",:style="buttonStyle") Open another Overlay
+  button(@click.prevent="openSecondOverlay",v-if="firstOpened",:style="buttonStyle") Open blue Overlay
   button(@click.prevent="closeFirstOverlay",v-if="firstOpened && secondOpened",:style="button2Style") Close bottom Overlay first
+  br
+  button(@click.prevent="openScrollOverlay") Overlay with allowScroll
   a(href="https://github.com/vue-comps/vue-overlay/blob/master/dev/basic.vue") source
+div(style="margin:auto;text-align:center;height:2000px") something centered (shouldn't move)
 </template>
 
 <script lang="coffee">
@@ -32,12 +35,15 @@ module.exports =
     openSecondOverlay: (cb) ->
       result = @overlay.open
         opacity:0.6
+        color: "blue"
         onBeforeOpen: =>
           @secondOpened = true
         onBeforeClose: =>
           @secondOpened = false
         onOpened:cb
       @button2Style.zIndex = result.zIndex
+    openScrollOverlay: ->
+      @overlay.open allowScroll:true
     closeFirstOverlay: ->
       @result.close()
   compiled: ->

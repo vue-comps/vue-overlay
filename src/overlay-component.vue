@@ -1,9 +1,9 @@
 // out: ..
 <template lang="jade">
-div#overlay(
-  v-bind:style="style"
-  @click="dismiss | notPrevented | prevent"
-  @keyup.esc="dismiss | notPrevented | prevent"
+div(
+  style="opacity:0;position:fixed;top:-10px;left:0;right:0;height:120vh;willChange:opacity",
+  :style="{zIndex:zIndex,backgroundColor:color}",
+  @click="dismiss"
   )
 </template>
 
@@ -12,72 +12,90 @@ module.exports =
 
   mixins:[
     require("vue-mixins/setCss")
+    require("vue-mixins/onDocument")
+    require("vue-mixins/getViewportSize")
   ]
-  props:
-    "fade":
-      type: Function
-      default: ({el,opacity,cb}) ->
-        @style.opacity = opacity
-        cb()
-  filters:
-    notPrevented: require("vue-filters/notPrevented")
-    prevent: require("vue-filters/prevent")
+
+  computed:
+    zIndex: ->
+      if @lastItem?
+        return @lastItem.zIndex
+      return 995
+    color: ->
+      if @lastItem? and @lastItem.color
+        return @lastItem.color
+      return "black"
+    opacity: ->
+      if @lastItem?
+        return @lastItem.opacity if @lastItem.opacity?
+        return 0.5
+      return 0
+    dismissable: ->
+      if @lastItem? and @lastItem.dismissable?
+        return @lastItem.dismissable
+      return true
+    lastItem: ->
+      if @stack.length > 0
+        li = @stack[@stack.length-1]
+        @updateScroll(li)
+        @updateKeyListener(true)
+        return li
+      @updateScroll()
+      @updateKeyListener()
+      return null
 
   data: ->
-    style:
-      opacity: 0
-      zIndex: 995
-      position: "fixed"
-      top: "-10px"
-      left: 0
-      right: 0
-      height: "120vh"
-      backgroundColor: "black"
-      willChange: "opacity"
-
+    stack: []
 
   el: -> document.createElement "div"
 
-  compiled: ->
-    @stack = []
-
   methods:
 
-    dismiss: (e) -> @close() if @stack[@stack.length-1].dissmissible
+    fade: ({el,opacity,cb}) ->
+      @setCss(el,"opacity",opacity)
+      cb()
 
-    setScroll: (options) ->
-      if options.allowScroll
-        @setCss(document.body,"overflow")
+    dismiss: (e) ->
+      unless e.defaultPrevented
+        if @dismissable
+          return null if e.type=="keyup" and e.which != 27
+          @close()
+          e.preventDefault()
+
+    updateKeyListener: (set) ->
+      if set and not @removeListener
+        @removeListener = @onDocument "keyup", @dismiss unless @removeListener
       else
-        @setCss(document.body,"overflow","hidden")
+        @removeListener?()
+        @removeListener = null
+
+
+    updateScroll: (options) ->
+      style = {o:null,m:null}
+      if options and not options.allowScroll
+        return null if @scrollDisabled
+        style.o = "hidden"
+        style.m = @getViewportSize().width - document.documentElement.clientWidth + "px"
+        @scrollDisabled = true
+      else
+        @scrollDisabled = false
+      @setCss(document.documentElement,"overflow",style.o)
+      @setCss(document.documentElement,"margin-right",style.m)
 
     open: (options={}) ->
       if @stack.length == 0
         @$appendTo('body')
-      @setScroll(options)
-      options.opacity ?= 0.5
-      options.dissmissible ?= true
-      @stack.push options
       options.onBeforeOpen?()
-      @style.zIndex += 5
-      options.zIndex = @style.zIndex
-      @fade el:@$el, opacity:options.opacity, cb: -> options.onOpened?()
-      return {zIndex: @style.zIndex+1, close: (callCbs=false) => @close(options,callCbs)}
+      options.zIndex = @zIndex + 5
+      @stack.push options
+      @fade el:@$el, opacity:@opacity, cb: -> options.onOpened?()
+      return {zIndex: @zIndex+1, close: (callCbs=true) => @close(options,callCbs)}
 
-    close: (options=@stack[@stack.length-1],callCbs=true) ->
-      if options? and (index = @stack.indexOf(options)) >-1
+    close: (options=@lastItem,callCbs=true) ->
+      if (index = @stack.indexOf(options)) >-1
         @stack.splice(index,1)
-        if @stack.length == 0
-          @setScroll(allowScroll:true)
-          opacity = 0
-          @style.zIndex = 995
-        else
-          lastItem = @stack[@stack.length-1]
-          @setScroll(lastItem)
-          opacity = lastItem.opacity
-          @style.zIndex = lastItem.zIndex
         options.onBeforeClose?() if callCbs
-        @fade el:@$el, opacity:opacity, cb: =>
+        @fade el:@$el, opacity:@opacity, cb: =>
           options.onClosed?() if callCbs
           @$remove() if @stack.length == 0
 </script>
