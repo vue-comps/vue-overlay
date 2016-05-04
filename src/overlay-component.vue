@@ -1,5 +1,5 @@
 // out: ..
-<template lang="jade">
+<template lang="pug">
 div(
   style="opacity:0;position:fixed;top:-10px;left:0;right:0;height:120vh;willChange:opacity",
   :style="{zIndex:zIndex,backgroundColor:color}",

@@ -1,8 +1,16 @@
-<template lang="jade">
+<template lang="pug">
 .container
   button(@click="openOverlay") Open Overlay
-  button(@click.prevent="openSecondOverlay",v-if="firstOpened",:style="buttonStyle") Open blue Overlay
-  button(@click.prevent="closeFirstOverlay",v-if="firstOpened && secondOpened",:style="button2Style") Close bottom Overlay first
+  button(
+    @click.prevent="openSecondOverlay",
+    :style="buttonStyle",
+    v-if="firstOpened"
+    ) Open blue Overlay
+  button(
+    @click.prevent="closeFirstOverlay",
+    :style="button2Style",
+    v-if="firstOpened && secondOpened"
+    ) Close bottom Overlay first
   br
   button(@click.prevent="openScrollOverlay") Overlay with allowScroll
   a(href="https://github.com/vue-comps/vue-overlay/blob/master/dev/basic.vue") source
