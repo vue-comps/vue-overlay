@@ -56,7 +56,7 @@ module.exports =
       cb()
 
     dismiss: (e) ->
-      unless e.defaultPrevented
+      if e? and not e.defaultPrevented
         if @dismissable
           return null if e.type=="keyup" and e.which != 27
           @close()
