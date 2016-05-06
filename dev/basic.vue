@@ -20,7 +20,7 @@ div(style="margin:auto;text-align:center;height:2000px") something centered (sho
 <script lang="coffee">
 module.exports =
   mixins:[
-    require("vue-mixins/getVue")
+    require("vue-mixins/vue")
   ]
   data: ->
     firstOpened: false
@@ -55,6 +55,6 @@ module.exports =
     closeFirstOverlay: ->
       @result.close()
   compiled: ->
-    @overlay = require("../overlay.js")(@getVue())
+    @overlay = require("../overlay.js")(@Vue)
 
 </script>
