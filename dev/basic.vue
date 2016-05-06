@@ -13,7 +13,7 @@
     ) Close bottom Overlay first
   br
   button(@click.prevent="openScrollOverlay") Overlay with allowScroll
-  a(href="https://github.com/vue-comps/vue-overlay/blob/master/dev/basic.vue") source
+  a(href="https://github.com/vue-comps/vue-overlay/blob/master/dev/basic.vue",style="margin: 20px") source
 div(style="margin:auto;text-align:center;height:2000px") something centered (shouldn't move)
 </template>
 
@@ -58,10 +58,3 @@ module.exports =
     @overlay = require("../overlay.js")(@getVue())
 
 </script>
-
-<style lang="stylus">
-.container > a
-  position absolute
-  left 250px
-  top 40px
-</style>
