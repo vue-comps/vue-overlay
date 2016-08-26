@@ -85,7 +85,9 @@ module.exports =
     open: (options={}) ->
       document.body.appendChild(@$el) unless @lastItem?
       options.onBeforeOpen?()
-      options.zIndex = @zIndex + 5
+      newZIndex = @zIndex + 5
+      if not options.zIndex? or options.zIndex <= newZIndex
+        options.zIndex = newZIndex
       @stack.push options
       @fade el:@$el, opacity:@opacity, cb: -> options.onOpened?()
       return {zIndex: @zIndex+1, close: (callCbs=true) => @close(options,callCbs)}

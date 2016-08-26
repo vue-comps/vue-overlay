@@ -34,16 +34,17 @@ If you need to reliable get the `Vue` instance, see [vue-mixins/vue](https://git
   - `close(callHooks=true)` - shortcut for `overlay.close(options,callHooks)` - options will be the same instance used for opening
   - `Options`
 
-| Name | type | default | description |
-| ---:| --- | ---| --- |
-| opacity | Number | 0.5 | opacity of the overlay |
-| dismissable | Boolean | true | is the overlay dismissable by click or ESC? |
-| onBeforeOpen | Function | null | hook before open animation |
-| onOpened | Function | null | hook after open animation |
-| onBeforeClose | Function | null | hook before close animation |
-| onClosed | Function | null | hook after close animation |
-| allowScroll | Boolean | false | don't set `overflow:hidden` on body |
-| color | String | "black" | background-color of the overlay |
+Name | type | default | description
+---:| --- | ---| ---
+opacity | Number | 0.5 | opacity of the overlay
+dismissable | Boolean | true | is the overlay dismissable by click or ESC?
+onBeforeOpen | Function | null | hook before open animation
+onOpened | Function | null | hook after open animation
+onBeforeClose | Function | null | hook before close animation
+onClosed | Function | null | hook after close animation
+allowScroll | Boolean | false | don't set `overflow:hidden` on body
+color | String | "black" | background-color of the overlay
+zIndex | Number | 1000 | minimum zIndex for the new overlay, cannot be lower than 1000
 
 overlay.close(options=lastOverlay, callHooks=true)
 ---
