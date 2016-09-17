@@ -51,6 +51,7 @@ overlay.close(options=lastOverlay, callHooks=true)
 - `options` the options object which was used to open a overlay
 - `callHooks` set to `false` to suppress the calls of `onBeforeClose` and `onClosed` of that overlay
 
+
 overlay.fade({el,opacity,cb})
 ---
 overwrite to add a animation
@@ -58,18 +59,20 @@ overwrite to add a animation
 - `opacity` the target opacity of the opening/closing
 - `cb` a function which must be called when finished
 
-example:
-```coffee
-overlay.fade = ({el,opacity,cb}) ->
-  Velocity el, {opacity: opacity},
-    {
-      duration: 300
-      queue: false
-      easing: 'easeOutQuad'
-      complete: cb
-    }
+`vue-overlay` is a singleton, so a fade function provided like this, will be used globally.
+Only do this once:
+```js
+Velocity = require("velocity-animate")
+Overlay = require("vue-overlay")
+Overlay.obj.methods.fade = function ({el,opacity,cb}) {
+  Velocity(el, {opacity: opacity}, {
+    duration: 300,
+    queue: false,
+    easing: 'easeOutQuad',
+    complete: cb
+  })
+}
 ```
-
 
 
 
