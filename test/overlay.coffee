@@ -9,9 +9,9 @@ describe "overlay", ->
     after ->
       unloadComp(env)
 
-    it "should load overlay", ->
+    it "should load and mount overlay", ->
       should.exist env.overlay
-      env.overlay.$el.parentNode.nodeType.should.equal 11
+      should.exist env.overlay.$el
 
     it "should open first overlay", (done) ->
       env.openOverlay ->

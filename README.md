@@ -16,6 +16,8 @@
 
 ```sh
 npm install --save-dev vue-overlay
+// vue@1.0
+npm install --save-dev vue-overlay@1
 ```
 or include `build/bundle.js`.
 
@@ -74,8 +76,9 @@ Overlay.obj.methods.fade = function ({el,opacity,cb}) {
 }
 ```
 
-
-
+## Changelog
+- 2.0.0  
+now compatible with vue 2.0.0  
 
 # Development
 Clone repository

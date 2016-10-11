@@ -47,8 +47,6 @@ module.exports =
   data: ->
     stack: []
 
-  el: -> document.createElement "div"
-
   methods:
 
     fade: ({el,opacity,cb}) ->

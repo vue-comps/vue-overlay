@@ -9,12 +9,12 @@
   button(
     @click.prevent="closeFirstOverlay",
     :style="button2Style",
-    v-if="firstOpened && secondOpened"
+    v-if="bothOpened"
     ) Close bottom Overlay first
   br
   button(@click.prevent="openScrollOverlay") Overlay with allowScroll
   a(href="https://github.com/vue-comps/vue-overlay/blob/master/dev/basic.vue",style="margin: 20px") source
-div(style="margin:auto;text-align:center;height:2000px") something centered (shouldn't move)
+  div(style="margin:auto;text-align:center;height:2000px") something centered (shouldn't move on disapearing of the scrollbar)
 </template>
 
 <script lang="coffee">
@@ -22,6 +22,8 @@ module.exports =
   mixins:[
     require("vue-mixins/vue")
   ]
+  computed:
+    bothOpened: -> @firstOpened and @secondOpened
   data: ->
     firstOpened: false
     secondOpened: false
@@ -54,7 +56,7 @@ module.exports =
       @overlay.open allowScroll:true
     closeFirstOverlay: ->
       @result.close()
-  compiled: ->
+  mounted: ->
     @overlay = require("../overlay.js")(@Vue)
 
 </script>
