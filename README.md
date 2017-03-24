@@ -1,3 +1,5 @@
+# DEPRECATED see [cerijs](https://github.com/cerijs)
+
 # vue-overlay
 
 > To mask out the background when a dialog / modal or similar is opened, a overlay is needed.
